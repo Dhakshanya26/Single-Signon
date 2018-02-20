@@ -1,0 +1,22 @@
+﻿@using Newtonsoft.Json
+@model WebApplication1.Controllers.ExternalLoginResultModel
+@{
+    Layout = null;
+}
+
+@if (!string.IsNullOrEmpty(Model.Callback))
+{
+
+        <script type="text/javascript">
+            if (window.opener && window.opener.@(Model.Callback)) {
+                window.opener.@(Model.Callback)(@Html.Raw(JsonConvert.SerializeObject(Model.CallbackParameters)));
+            }
+            window.close();
+        </script>
+   
+}
+else
+{
+    <script type="text/javascript">
+        window.close();
+    </script>}}

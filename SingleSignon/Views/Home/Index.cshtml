@@ -1,0 +1,90 @@
+﻿
+ @using (Html.BeginForm("ExternalLoginInModalPopUp", "Home", FormMethod.Post, new
+ {
+     @class = "form-horizontal",
+     target = "login-popup",
+     onsubmit = "invokeLogin()"
+ }))
+ {
+     <button class="Google-signin" type="submit" name="provider" id="Google" value="Google" onclick="myExternalModal.invokeLogin()">
+         <div class="Google-logo">
+             <img src="~/Images/g-logo.png" />
+         </div>
+         <div class="Google-text">Continue with Google</div>
+     </button>
+ }
+<style>
+    form {
+        text-align: center;
+    }
+    .Google-signin {
+        height: 50px;
+        margin-top: 100px;
+        background: #6e6ebd;
+        min-width: 250px;
+    }
+    .Google-logo {
+        display: inline-flex;
+        width: auto;
+        float: left;
+    }
+    img {
+        height: 24px;
+        display: flex;
+        float: left;
+        width: auto;
+    }
+    .Google-text {
+        margin-left: 10px;
+        color: white;
+        font-family: inherit;
+        float: left;
+        font-size: 17px;
+    }
+</style>
+ @section scripts
+ {
+     <script>
+         $(function () {
+            
+             invokeLogin = () => {
+                 var chrome = 100;
+                 var width = 640;
+                 var height = 500;
+                 var left = (screen.width - width) / 2;
+                 var top = (screen.height - height - chrome) / 2;
+                 var options = "status=0,toolbar=0,location=1,resizable=1,scrollbars=1,left=" +
+                     left +
+                     ",top=" +
+                     top +
+                     ",width=" +
+                     width +
+                     ",height=" +
+                     height;
+                 window.open("about:blank", "login-popup", options);
+             }
+         });
+
+         //Call back from external login window
+         function loginCallback(result) {
+             debugger;
+             alert(result.Success);
+             if (result.ReturnUrl) {
+                 if (result.Redirect) {
+                     window.location.href = result.ReturnUrl;
+                 } else {
+                     $('#external-login-confirmation').modal('show');
+                 }
+
+             } else {
+                 if (result.Success) {
+                     $('#hdExternalLoginReuslt').val(result.Success);
+                     $('#hdExternalLoginReuslt').trigger("change");
+                 } else if (result.Message !== '') {
+                     $('#hdExternalLoginErrorMessage').val(result.Message);
+                     $('#hdExternalLoginErrorMessage').trigger("change");
+                 }
+             }
+         }
+     </script>
+ }
