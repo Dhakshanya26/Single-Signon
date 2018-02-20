@@ -1,4 +1,4 @@
-# Signle signon sample
+# Single sign on sample
 
 This project is developed using MVC framework,Razor,C#,Owin.
 
